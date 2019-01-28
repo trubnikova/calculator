@@ -1,0 +1,7 @@
+name = Calculator 
+description = hooks for basis-it project
+package = PROJECTS
+version = VERSION
+core = 7.x
+
+

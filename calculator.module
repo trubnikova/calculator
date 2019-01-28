@@ -1,0 +1,184 @@
+<?php
+function calculator_menu(){
+    $items['admin/settings/calculator'] = array( // адрес страницы с формой
+      'title' => t('Calculator options'), // заголовок пункта меню
+      'description' => '', // описание
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('calculator_form'), // имя функции конструктора формы
+      'access arguments' => array('administer site configuration'), // права на страницу
+      'type' => MENU_NORMAL_ITEM, // обычный пункт меню
+    );
+    return $items;
+}
+
+// констуктор формы
+function calculator_form($form, $form_state){
+    $form = array();
+    
+    // добавляем поля
+    $form['calculator_param_1'] = array(
+        '#title' => 'Коэффициент для количества компьютеров (от 1 до 20)',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_1', ''), // функция получения переменной по имени (второй параметр - значение по умолчанию)
+    );
+	
+	 $form['calculator_param_10'] = array(
+        '#title' => 'Коэффициент для количества компьютеров (от 21 до 75)',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_10', ''), // функция получения переменной по имени (второй параметр - значение по умолчанию)
+    );
+    
+    $form['calculator_param_2'] = array(
+        '#title' => 'Коэффициент для количества серверов',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_2', ''), 
+    );
+    
+    $form['calculator_param_3'] = array(
+        '#title' => 'Коэффициент для количества офисов',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_3', ''), 
+    );
+    
+
+     $form['tarif1'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('Тариф "Без выездов"'),
+		'#collapsible' => TRUE, // Added
+		'#collapsed' => TRUE,  // Added
+	  );
+     $form['tarif1']['calculator_param_4'] = array(
+        '#title' => 'Коэффициент',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_4', ''), 
+    );
+	$form['tarif1']['calculator_param_7'] = array(
+        '#title' => 'Краткий список предоставляемых услуг',
+        '#type' => 'textarea', 
+        '#default_value' => variable_get('calculator_param_7', ''), 
+    );
+	$form['tarif1']['calculator_param_11'] = array(
+        '#title' => 'Дополнительные услуги',
+        '#type' => 'textarea', 
+        '#default_value' => variable_get('calculator_param_11', ''), 
+    ); 
+	
+	$form['tarif2'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('Тариф "Стандартный"'),
+		'#collapsible' => TRUE, // Added
+		'#collapsed' => TRUE,  // Added
+	  );
+    $form['tarif2']['calculator_param_5'] = array(
+        '#title' => 'Коэффициент',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_5', ''), 
+    );
+	$form['tarif2']['calculator_param_8'] = array(
+        '#title' => 'Краткий список предоставляемых услуг',
+        '#type' => 'textarea', 
+        '#default_value' => variable_get('calculator_param_8', ''), 
+    );
+	$form['tarif2']['calculator_param_12'] = array(
+        '#title' => 'Дополнительные услуги',
+        '#type' => 'textarea', 
+        '#default_value' => variable_get('calculator_param_12', ''), 
+    ); 
+		
+	$form['tarif3'] = array(
+		'#type' => 'fieldset',
+		'#title' => t('Тариф "Круглосуточный"'),
+		'#collapsible' => TRUE, // Added
+		'#collapsed' => TRUE,  // Added
+	  );
+    $form['tarif3']['calculator_param_6'] = array(
+        '#title' => 'Коэффициент',
+        '#type' => 'textfield', 
+        '#default_value' => variable_get('calculator_param_6', ''), 
+    );
+	$form['tarif3']['calculator_param_9'] = array(
+        '#title' => 'Краткий список предоставляемых услуг',
+        '#type' => 'textarea', 
+        '#default_value' => variable_get('calculator_param_9', ''), 
+    );
+	$form['tarif3']['calculator_param_13'] = array(
+        '#title' => 'Дополнительные услуги',
+        '#type' => 'textarea', 
+        '#default_value' => variable_get('calculator_param_13', ''), 
+    ); 
+        
+ 
+   //другие типы полей и их опции в апи друпала/ генерация форм
+    
+    // добавляем кнопку сабмита
+    $form['mymodule_submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Save'),
+    );
+    
+	return $form;
+}
+
+
+// сохранение формы (к имени конструктора дописывается _submit)
+function calculator_form_submit($form, &$form_state){
+    $v = &$form_state['values']; // тут лежат значения присланной формы
+    
+    // сохраняем нужные значения (имена лучше начинать с префикса модуля (чтоб не изменить чужие настройки), потому что переменные всех модулей лежат в одной области видимости )
+    variable_set('calculator_param_1', $v['calculator_param_1']);
+    variable_set('calculator_param_2', $v['calculator_param_2']);
+    variable_set('calculator_param_3', $v['calculator_param_3']);
+    variable_set('calculator_param_4', $v['calculator_param_4']);
+    variable_set('calculator_param_5', $v['calculator_param_5']);
+    variable_set('calculator_param_6', $v['calculator_param_6']);
+    variable_set('calculator_param_7', $v['calculator_param_7']);
+    variable_set('calculator_param_8', $v['calculator_param_8']);
+    variable_set('calculator_param_9', $v['calculator_param_9']);
+    variable_set('calculator_param_10', $v['calculator_param_10']);
+    variable_set('calculator_param_11', $v['calculator_param_11']);
+    variable_set('calculator_param_12', $v['calculator_param_12']);
+    variable_set('calculator_param_13', $v['calculator_param_13']);
+    
+    
+    // сообщаем об успешном сохранении
+    drupal_set_message(t('Options has been saved.'));
+    // всё :) не забыть сбрасывать кеш меню при изменении hook_menu()
+}
+
+
+/*
+потом  на нужных страницах делаешь вывод этих параметров в html
+например в хуке инициализации модуля
+*/
+function calculator_init(){ 
+    // этот хук вызывается всегда
+    // здесь можно вывести js на всех страницах или ставить условия
+    
+    // чтоб не было конфликтов имен  вкладываем свои параметры в подпараметры :)
+    $js_params = array(
+        'calculator' => array( 
+            'param_1' => variable_get('calculator_param_1', ''),
+            'param_2' => variable_get('calculator_param_2', ''),
+            'param_3' => variable_get('calculator_param_3', ''),
+            'param_4' => variable_get('calculator_param_4', ''),
+            'param_5' => variable_get('calculator_param_5', ''),
+            'param_6' => variable_get('calculator_param_6', ''),
+            'param_7' => variable_get('calculator_param_7', ''),
+            'param_8' => variable_get('calculator_param_8', ''),
+            'param_9' => variable_get('calculator_param_9', ''),
+            'param_10' => variable_get('calculator_param_10', ''),
+            'param_11' => variable_get('calculator_param_11', ''),
+            'param_12' => variable_get('calculator_param_12', ''),
+            'param_13' => variable_get('calculator_param_13', ''),
+            
+        )
+    );
+    
+    drupal_add_js($js_params, 'setting');
+    
+    // после этого все указанные параметры будут доступны в js объекте Drupal.settings
+    //alert(Drupal.settings.calculator.param_1);
+    
+    //drupal_add_js('JavaScript или JQuery код','inline'); // так можно добавить кусок кода в шаблон
+    
+}
